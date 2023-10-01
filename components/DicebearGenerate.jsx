@@ -43,6 +43,10 @@ export const DicebearGenerate = () => {
 
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
+      <div className='text-center'><a> get your contributers to the top</a>
+      <br />
+      find two simil araliens and <a href='https://github.com/Ebrahim-Ramadan/dnd-contributors-avatars' className='font-bold transition-all duration-300 ease-in-out text-sky-400 hover:text-sky-700 ' target='_blank'>report here</a></div>
+     
       <Droppable droppableId="avatars" direction="horizontal">
         {(provided) => (
           <div
