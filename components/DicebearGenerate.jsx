@@ -5,6 +5,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 export const DicebearGenerate = () => {
   const [avatars, setAvatars] = useState([]);
+  const [Prompt, setPrompt] = useState();
 
   useEffect(() => {
 
@@ -36,6 +37,22 @@ export const DicebearGenerate = () => {
     setAvatars(items);
   }
 
+
+  const appendNewAvatars = () => {
+    if (Prompt && Prompt != '') {
+      const newPromptResult = `https://robohash.org/${Prompt}`;
+      const newAvatar = { id: Math.floor(Math.random() * (100 - 50 + 1)) + 50, url: newPromptResult}
+      setAvatars((prevAvatars) => [...prevAvatars, newAvatar]);
+    }
+    else {
+      return
+   }
+  };
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      appendNewAvatars();
+    }
+  };
   return (
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <div className='text-center'><a> get your contributers to the top</a>
@@ -68,6 +85,7 @@ export const DicebearGenerate = () => {
           </div>
         )}
       </Droppable>
+      <div><input placeholder='wtf is your prompt?' className='bg-transparent outline-none border-none' onKeyDown={handleKeyPress} onChange={(e) => setPrompt(e.target.value)}/> <button onClick={appendNewAvatars}>prompt</button></div>
     </DragDropContext>
   );
 };
