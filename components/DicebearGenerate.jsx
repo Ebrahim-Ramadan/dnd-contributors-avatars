@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
@@ -16,13 +16,13 @@ export const DicebearGenerate = () => {
 
     const generateAvatars = async () => {
       try {
-        const avatarUrls = await Promise.all(
-          contributors.map(async (contributor) => {
+        const avatarData = await Promise.all(
+          contributors.map(async (contributor, index) => {
             const avatarUrl = `${roboHashBaseUrl}${contributor}.png`;
-            return avatarUrl;
+            return { id: `avatar-${index}`, url: avatarUrl };
           })
         );
-        setAvatars(avatarUrls);
+        setAvatars(avatarData);
       } catch (error) {
         console.log(error);
       }
@@ -38,7 +38,7 @@ export const DicebearGenerate = () => {
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    setAvatars(...items);
+    setAvatars(items);
   }
 
   return (
@@ -47,26 +47,24 @@ export const DicebearGenerate = () => {
         {(provided) => (
           <div
             className='flex flex-wrap max-w-full justify-center'
-            {...provided.droppableProps}
             ref={provided.innerRef}
+            {...provided.droppableProps}
           >
-
-            {avatars?.map((avatar, index) => (
-              <Draggable key={avatar} draggableId={avatar} index={index}>
+            {avatars.map((avatar, index) => (
+              <Draggable key={avatar.id} draggableId={avatar.id} index={index}>
                 {(provided) => (
-  <div
-    ref={provided.innerRef}
-    {...provided.draggableProps}
-    {...provided.dragHandleProps}
-    style={{ ...provided.draggableProps.style }}
-    className='w-24 h-24 ml-[-20px] rounded-full border border-2 bg-gray-400 cursor-pointer hover:opacity-90 transition-all duration-300 ease-in-out'
-  >
-    <Image alt='avatar' width='100' height='100' src={avatar} />
-  </div>
-)}
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={{ ...provided.draggableProps.style }}
+                    className='w-24 h-24 ml-[-20px] rounded-full border border-2 bg-gray-400 cursor-pointer hover:opacity-90 transition-all duration-300 ease-in-out'
+                  >
+                    <Image alt='avatar' priority={false} width={100} height={100} src={avatar.url} />
+                  </div>
+                )}
               </Draggable>
             ))}
-            
             {provided.placeholder}
           </div>
         )}
