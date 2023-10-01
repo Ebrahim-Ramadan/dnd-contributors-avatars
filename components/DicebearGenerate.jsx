@@ -7,21 +7,16 @@ export const DicebearGenerate = () => {
   const [avatars, setAvatars] = useState([]);
 
   useEffect(() => {
-    const contributors = [];
-    const roboHashBaseUrl = 'https://robohash.org/';
-
-    for (let i = 1; i <= 100; i++) {
-      contributors.push(`contributer${i}`);
-    }
 
     const generateAvatars = async () => {
       try {
-        const avatarData = await Promise.all(
-          contributors.map(async (contributor, index) => {
-            const avatarUrl = `${roboHashBaseUrl}${contributor}.png`;
-            return { id: `avatar-${index}`, url: avatarUrl };
+        const avatarCount = Math.floor(Math.random() * (100 - 50 + 1)) + 50;
+        const avatarData = Array.from({ length: avatarCount }, (_, index) => {
+          const randomNumber = Math.floor(Math.random() * 1000); // generate a random number between 0 and 1000 with randomized count of max length so the user can have absolute maximum randomniess (not a total mess)
+          const avatarUrl = `https://robohash.org/${randomNumber}.png`;
+          return { id: `avatar-${index}`, url: avatarUrl };
           })
-        );
+        
         setAvatars(avatarData);
       } catch (error) {
         console.log(error);
