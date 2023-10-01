@@ -10,7 +10,7 @@ export const DicebearGenerate = () => {
     const contributors = [];
     const roboHashBaseUrl = 'https://robohash.org/';
 
-    for (let i = 1; i <= 50; i++) {
+    for (let i = 1; i <= 100; i++) {
       contributors.push(`contributer${i}`);
     }
 
@@ -58,9 +58,9 @@ export const DicebearGenerate = () => {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     style={{ ...provided.draggableProps.style }}
-                    className='w-24 h-24 ml-[-20px] rounded-full border border-2 bg-gray-400 cursor-pointer hover:opacity-90 transition-all duration-300 ease-in-out'
+                    className='w-20 h-20 ml-[-20px] rounded-full cursor-grab border border-2 bg-gray-700 cursor-pointer hover:opacity-20 transition-all duration-300 ease-in-out'
                   >
-                    <Image alt='avatar' priority={false} width={100} height={100} src={avatar.url} />
+                    <Image alt='avatar' priority={false} width={70} height={70} src={avatar.url} />
                   </div>
                 )}
               </Draggable>
