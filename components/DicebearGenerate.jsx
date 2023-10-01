@@ -85,7 +85,7 @@ export const DicebearGenerate = () => {
           </div>
         )}
       </Droppable>
-      <div><input placeholder='wtf is your prompt?' className='bg-transparent outline-none border-none' onKeyDown={handleKeyPress} onChange={(e) => setPrompt(e.target.value)}/> <button onClick={appendNewAvatars}>prompt</button></div>
+      <div className='p-8'><input placeholder='wtf is your prompt?' className='bg-transparent outline-none border-none' onKeyDown={handleKeyPress} onChange={(e) => setPrompt(e.target.value)}/> <button onClick={appendNewAvatars}>prompt</button></div>
     </DragDropContext>
   );
 };
