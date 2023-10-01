@@ -1,39 +1,76 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
 export const DicebearGenerate = () => {
-  const [avatars, setavatars] = useState([]);
+  const [avatars, setAvatars] = useState([]);
+
   useEffect(() => {
     const contributors = [];
     const roboHashBaseUrl = 'https://robohash.org/';
+
     for (let i = 1; i <= 50; i++) {
       contributors.push(`contributer${i}`);
     }
 
-    const GenerateAvatars = async () => {
+    const generateAvatars = async () => {
       try {
         const avatarUrls = await Promise.all(
           contributors.map(async (contributor) => {
             const avatarUrl = `${roboHashBaseUrl}${contributor}.png`;
-            return avatarUrl; 
+            return avatarUrl;
           })
         );
-        setavatars(avatarUrls)
+        setAvatars(avatarUrls);
       } catch (error) {
         console.log(error);
       }
     };
 
-    GenerateAvatars();
+    generateAvatars();
   }, []);
 
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+
+    const items = Array.from(avatars);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setAvatars(...items);
+  }
+
   return (
-    <div className='flex flex-wrap max-w-full justify-center'>
-      {avatars?.map((avatar) => (
-        <div key={avatar} className='w-24 h-24 ml-[-20px] rounded-full border border-2 bg-gray-400 cursor-pointer hover:opacity-90 rtansition-all duration-300 ease-in-out'>
-          <Image alt='avatar' width='100' height='100' src={avatar} />
-        </div>
-      ))}
-    </div>
-  )
+    <DragDropContext onDragEnd={handleOnDragEnd}>
+      <Droppable droppableId="avatars" direction="horizontal">
+        {(provided) => (
+          <div
+            className='flex flex-wrap max-w-full justify-center'
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+
+            {avatars?.map((avatar, index) => (
+              <Draggable key={avatar} draggableId={avatar} index={index}>
+                {(provided) => (
+  <div
+    ref={provided.innerRef}
+    {...provided.draggableProps}
+    {...provided.dragHandleProps}
+    style={{ ...provided.draggableProps.style }}
+    className='w-24 h-24 ml-[-20px] rounded-full border border-2 bg-gray-400 cursor-pointer hover:opacity-90 transition-all duration-300 ease-in-out'
+  >
+    <Image alt='avatar' width='100' height='100' src={avatar} />
+  </div>
+)}
+              </Draggable>
+            ))}
+            
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+  );
 };
