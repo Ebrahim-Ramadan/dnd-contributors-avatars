@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
+import sillyJOJI from '@/public/silltJOJI.png'
 export const DicebearGenerate = () => {
   const [avatars, setAvatars] = useState([]);
   const [Prompt, setPrompt] = useState();
@@ -76,7 +76,7 @@ export const DicebearGenerate = () => {
                     style={{ ...provided.draggableProps.style }}
                     className='w-20 h-20 ml-[-20px] rounded-full cursor-grab border border-2 bg-gray-700 cursor-pointer hover:opacity-20 transition-all duration-300 ease-in-out'
                   >
-                    <Image alt='avatar' priority={false} width={70} height={70} src={avatar.url} />
+                    <Image alt='avatar' priority={false} width={70} height={70} src={avatar.url?avatar.url:sillyJOJI} />
                   </div>
                 )}
               </Draggable>
