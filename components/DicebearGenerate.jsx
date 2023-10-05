@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
+const APIKEY='DWuPQkyvfLoCYe'
 export const DicebearGenerate = () => {
   const [avatars, setAvatars] = useState([]);
   const [Prompt, setPrompt] = useState();
@@ -11,18 +11,19 @@ export const DicebearGenerate = () => {
 
     const generateAvatars = async () => {
       try {
-        const avatarCount = Math.floor(Math.random() * (100 - 50 + 1)) + 50;
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        const avatarCount = Math.floor(Math.random() * (100 - 80 + 1)) + 80;
         const avatarData = Array.from({ length: avatarCount }, (_, index) => {
-          const randomNumber = Math.floor(Math.random() * 1000); // generate a random number between 0 and 1000 with randomized count of max length so the user can have absolute maximum randomniess (not a total mess)
-          const avatarUrl = `https://robohash.org/${randomNumber}.png`;
+          const randomCharacter = characters[Math.floor(Math.random() * characters.length)];
+          const avatarUrl = `https://api.multiavatar.com/${randomCharacter}.png?apikey=${APIKEY}`;
           return { id: `avatar-${index}`, url: avatarUrl };
-          })
+        });
         
         setAvatars(avatarData);
       } catch (error) {
         console.log(error);
       }
-    };
+    }      
 
     generateAvatars();
   }, []);
@@ -40,13 +41,14 @@ export const DicebearGenerate = () => {
 
   const appendNewAvatars = () => {
     if (Prompt && Prompt != '') {
-      const newPromptResult = `https://robohash.org/${Prompt}`;
+      const newPromptResult = `https://api.multiavatar.com/${Prompt}.png?apikey=${APIKEY}`;
       const newAvatar = { id: Math.floor(Math.random() * (100 - 50 + 1)) + 50, url: newPromptResult}
       setAvatars((prevAvatars) => [...prevAvatars, newAvatar]);
     }
     else {
       return
-   }
+    }
+    setPrompt('')
   };
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -74,9 +76,9 @@ export const DicebearGenerate = () => {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     style={{ ...provided.draggableProps.style }}
-                    className='w-20 h-20 ml-[-20px] rounded-full cursor-grab border border-2 bg-gray-700 cursor-pointer hover:opacity-20 transition-all duration-300 ease-in-out'
+                    className='w-20 h-20 ml-[-20px] rounded-full cursor-grab border border-2 bg-gray-700 cursor-grap hover:opacity-20 transition-all duration-300 ease-in-out'
                   >
-                    <Image alt='avatar' priority={false} width={70} height={70} src={avatar.url} />
+                    <Image alt='avatar' priority={false} width={80} height={80} src={avatar.url} />
                   </div>
                 )}
               </Draggable>
